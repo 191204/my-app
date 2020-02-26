@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8" id="alls">
+					
+					
+					
+					<!-- <div class="col-lg-4"  style="border: 1px solid red;">
+						<img id="listimg" src="" alt="" class="img-responsive">
+					</div>
+					
+					<div class="col-lg-8" style="border: 1px solid blue;">
+						<h3 id="listname">怀旧随身听 回到悸动的90年代</h3>
+						<div id="">
+							<span id="listmost">playlists.description</span>
+						</div> -->
+						<!-- 介绍：playlists.description
+						介绍： 武汉生病了
+						希望他快快好起来
+						希望全国各地的你们都健康 
+						照顾好家人 
+						
+						愿大家可以乐观一点
+						保持好良好的心态
+						我们都要好好的
+						
+						感恩一线的每一个天使
+						你们辛苦了
+						
+						以后活着的每一天
+						我们都善意的对待这个世界好吗 -->
+						
+					</div>
+					
+						<div class="col-lg-3 col-lg-offset-1">
+							<!-- <div class="list-group">
+							<a href="#" class="list-group-item active">
+								猜你喜欢<span class="badge">4</span>
+							</a>
+							<a href="#" class="list-group-item">Html5难不难</a>
+							<a href="#" class="list-group-item">CSS快速学习</a>
+							<a href="#" class="list-group-item">Html5难不难</a>
+							<a href="#" class="list-group-item">CSS快速学习</a>
+							</div> -->
+							<h4>喜欢这个歌单的人</h4><hr >
+							123
+							<h4>热门歌单</h4><hr >
+							456
+						</div>
+						
+					<div class="col-lg-8" id="alls">
+						<table class="table" id="showDeatil">
+							<tr>
+								<td></td>
+								<td>歌曲标题</td>
+								<td>时长</td>
+								<td>歌手</td>
+								<td>专辑</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				
+			</div>
+		
+		
+		
+		
+		
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<!-- 介绍 -->
+		<script type="text/javascript">
+			// function getlist(){
+				// console.log( window.location.search);
+				var str = window.location.search;
+				var n = str.indexOf("=");
+				var id = str.substring(n+1);
+				// console.log(id);
+				
+				$.ajax({
+					type:'GET',
+					dataType:'json',
+					// /playlist?id=3103758126
+					// /playlist?id=3175082015
+					url:'http://localhost:3000/playlist/detail',
+					data:{
+						id
+					},
+					success:function(data){
+						console.log(data);
+						
+						var arr = data.playlist
+						var alls = $('#alls');
+						var div = $('<div>');
+						div.attr('class','col-lg-4');
+						var img = $("<img>");
+						img.attr("class","img-responsive");
+						img.attr("src",arr.coverImgUrl);
+						img.css({'height':'200px','width':'200px'});
+						var div1 = $('<div>');
+						div1.attr('class','col-lg-8');
+						var h3 = $('<h3>');
+						h3.html(arr.name);
+						var p = $('<p>');
+						p.html(arr.description)
+						div.append(img);
+						div1.append(h3,p);
+						alls.append(div,div1);
+					},
+					
+						
+					error:function(err){
+						console.log(err);
+					}
+				});
+				
+		</script>
+		
+		
+		<!-- 歌曲 -->
+		<script type="text/javascript">
+			// console.log( window.location.search);
+			var str = window.location.search;
+			var n = str.indexOf("=");
+			var id = str.substring(n+1);
+			
+			$.ajax({
+				type:"GET",
+				dataType:"json",
+				// /playlist/detail?id=24381616
+				url:"http://localhost:3000/playlist/detail",
+				data:{
+					id
+				},
+				success:function(data){
+					var arr = data.playlist.tracks;
+					for(var i = 0;i < arr.length;i++){
+						var tr = $("<tr>");
+						var td1 = $("<td>");
+						td1.html("<span class='glyphicon glyphicon-play-circle'></span>");
+						var td2 = $("<td>");
+						td2.html(arr[i].name);
+						var td3 = $("<td>");
+						var time = arr[i].dt;
+						var now = new Date(time);
+						var m = now.getMinutes();
+						var s = now.getSeconds();
+						var mm = m > 9 ? m : 0+''+ m;
+						var ss = s > 9 ? s : 0+''+ s;
+						td3.html(mm +':'+ss);
+						
+						var td4 = $("<td>");
+						td4.html(arr[i].ar[0].name);
+						var td5 = $("<td>");
+						td5.html(arr[i].al.name);
+						
+						tr.append(td1,td2,td3,td4,td5);
+						
+						$("#showDeatil").children().append(tr);
+						
+						// console.log(data);
+					}
+					
+				},
+				error:function(err){
+					console.log(err);
+				}
+			});
+			
+			
+		</script>
+		
+		
+		
+		
+		
+		
+	</body>
+</html>
